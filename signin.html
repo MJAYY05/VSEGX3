@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - VSEG Chatting Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fff;
+        }
+        header {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            font-weight: bold;
+            font-size: 24px;
+            margin-left: 40px;
+        }
+        .nav {
+            display: flex;
+            gap: 15px;
+            margin-right: 40px;
+            align-items: center;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #000;
+            font-size: 16px;
+        }
+        .nav .button {
+            padding: 10px 20px;
+            border: 1px solid #000;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .nav .button.sing {
+            background-color: #000;  /* สีพื้นหลังเป็นสีดำ */
+            color: #fff;             /* สีตัวอักษรเป็นสีขาว */
+        }
+        .nav .button:hover {
+            background-color: #444;
+            color: #fff;
+        }
+        .container {
+            display: flex;
+            justify-content: flex-start; /* เอาฟอร์มไว้ที่ซ้าย */
+            align-items: center;
+            gap: 20px;
+            max-width: 1200px;
+            width: 90%;
+            padding: 20px;
+        }
+
+        .illustration {
+            position: absolute;  /* ใช้ position absolute เพื่อให้อยู่ทางขวาของหน้าจอ */
+            right: 0;  /* ให้อยู่ด้านขวา */
+            margin-right: 100px;  /* เพิ่มระยะห่างจากขอบขวา */
+            transition: transform 0.3s ease;
+            top: 370px;
+        }
+
+        .illustration img {
+            width: 400px;
+            height: auto;
+        }
+
+        .form-container {
+            flex: 2;
+            max-width: 650px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+            margin-left: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+        }
+        .form-container h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+        .form-container p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-container input {
+            width: 95%; 
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 30px;
+            margin-right: 300px;
+        }
+        .form-container button {
+            width: 101%;
+            padding: 15px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #444;
+            color: #fff;
+        }
+        .form-container a {
+            display: inline;
+            margin-top: 20px;
+            text-decoration: none;
+            font-size: 16px;
+            color: #000;
+            text-align: center;
+            position: relative;
+            top: 20px; 
+        }
+        .form-container .register-text {
+            display: inline; 
+            color: black;
+            position: relative;
+            top: 20px;
+        }
+        .password-field {
+            position: relative;  /* ทำให้สามารถจัดตำแหน่งภายในได้ */
+        }
+
+        .toggle-password {
+            position: absolute;  /* วางในตำแหน่งที่แน่นอน */
+            right: 15px;  /* ตั้งระยะห่างจากขอบขวา */
+            top: 50%;  /* วางตรงกลางในแนวตั้ง */
+            transform: translateY(-50%);  /* ทำให้ไอคอนอยู่ตรงกลาง */
+            cursor: pointer;  /* เปลี่ยน cursor เป็น pointer เมื่อ hover */
+            color: #666;
+        }
+        .form-container label {
+            font-size: 15px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 10px;
+            display: block; /* ทำให้ label อยู่ในบรรทัดใหม่ */
+            margin-left: 20px; /* เว้นระยะห่างจากขอบซ้าย */
+            text-align: left; /* จัดตำแหน่งข้อความให้ชิดซ้าย */
+        }
+        .remember-me {
+            display: flex;
+            align-items: center;  /* จัดให้ checkbox และข้อความอยู่ในแนวเดียวกัน */
+            margin-top: -5px;  /* เพิ่มระยะห่างจากช่องกรอกข้อมูลด้านบน */
+            margin-left: 15px;
+        }
+
+        .remember-me input {
+            margin-right: 10px;  /* ระยะห่างระหว่าง checkbox กับข้อความ */
+            width: auto;  /* ปรับขนาด checkbox */
+            height: auto;  /* ปรับขนาด checkbox */
+        }
+
+        .remember-me label {
+            margin-left: 0px;  /* ปรับระยะห่างจาก checkbox */
+            margin-top: -17px;    /* ปรับระยะห่างจากช่องกรอกข้อมูล */
+            font-size: 16px;    /* ปรับขนาดฟอนต์ */
+            color: #000;        /* เปลี่ยนสีของข้อความ */
+        }
+
+        /* ปรับตำแหน่งของ forgot-password */
+        .forgot-password-container {
+            position: absolute;   /* ใช้ position absolute เพื่อจัดตำแหน่งแน่นอน */
+            top: 515px;            /* ตั้งระยะห่างจากด้านบน */
+            right: 640px;           /* ตั้งระยะห่างจากขอบขวา */
+        }
+
+        .forgot-password {
+            display: block;
+            font-size: 16px;
+            color: red !important;  /* เปลี่ยนสีข้อความเป็นสีแดง */
+            cursor: pointer;  /* เปลี่ยน cursor เมื่อ hover */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">VSEG</div>
+        <div class="nav">
+            <a href="/Home" class="button">Home</a>
+            <a href="/Register" class="button sing">Register</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="illustration">
+            <img src="images/signin.png" alt="Illustration">
+        </div>
+        <div class="form-container">
+            <h1>VSEG Chat</h1>
+            <form id="signin-form" onsubmit="return submitForm(event)">
+                <label for="username">Username or Email</label>
+                <input type="text" name="username" id="username" placeholder="Enter Your Username Or Email" required
+                    pattern="^[a-zA-Z0-9@.]+$"
+                    title="This is not a valid username or email address.">
+
+                <div class="password-field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter Your Password" required
+                        pattern="^[a-zA-Z0-9]+$"
+                        title="Please check your password again.">
+                    <span class="material-icons toggle-password" onclick="togglePassword('password', this)">visibility_off</span>
+                </div>
+
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                    <label for="rememberMe">Remember Me</label>
+                </div>
+
+                <div class="forgot-password-container">
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit">Login</button>
+            </form>
+            <p><span class="register-text">Don't have an account?</span> <a href="/Register" style="color: blue;">Register</a></p>
+        </div>
+    </div>
+
+    <script>
+        // ฟังก์ชันสำหรับส่งข้อมูลล็อกอิน
+        async function submitForm(event) {
+            event.preventDefault();
+
+            const username = document.querySelector('input[name="username"]').value;
+            const password = document.querySelector('input[name="password"]').value;
+
+            const emailPattern = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/;
+            const isEmail = emailPattern.test(username);
+            const userType = isEmail ? 'email' : 'username'; // ตรวจสอบว่าเป็นอีเมลหรือไม่
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ [userType]: username, password })
+                });
+
+                const data = await response.json();
+
+                if (data.token) {
+                    alert('Login successful!');
+                    localStorage.setItem('authToken', data.token);
+                    window.location.href = '/Home';
+                } else {
+                    alert(data.message || 'Login failed');
+                }
+            } catch (err) {
+                console.error('Error:', err);
+                alert('There was an error while logging in.');
+            }
+        }
+
+        // ฟังก์ชัน toggle password
+        function togglePassword(inputId, iconElement) {
+            const inputField = document.getElementById(inputId);
+            if (inputField.type === "password") {
+                inputField.type = "text";
+                iconElement.textContent = "visibility";
+            } else {
+                inputField.type = "password";
+                iconElement.textContent = "visibility_off";
+            }
+        }
+        function validatePassword(password) {
+            const regex = /^[a-zA-Z0-9]+$/;
+            return regex.test(password);
+        }
+    </script>
+</body>
+</html>

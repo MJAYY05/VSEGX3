@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style">
+    
+</head>
+<body>
+    <header>
+        <div class="logo">VSEG</div>
+        <div class="nav">
+            <img src="images/user.png" class="small-image2" onclick="togglePopup()" alt="Profile Button">
+        </div>
+    </header>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="icon-container">
+            <div class="menu-icon" onclick="toggleIcons()">☰</div>
+        </div>
+        <div class="icons" id="iconList">
+            <div class="icon-container">
+                <button class="btnX" onclick="openCompose()">+</button>
+            </div>
+            <div class="icon-container">
+                <img src="images/email.jpg" class="small-image4" onclick="goToEmail()">
+                <p>Email</p>
+            </div>
+            <div class="icon-container">
+                <img src="images/chat1.png" class="small-image4" onclick="goToChat()">
+                <p>Chat</p>
+            </div>
+            <div class="icon-container">
+                <img src="images/file1.png" class="small-image4" onclick="goToChat()">
+                <p>File</p>
+            </div>
+            <div class="icon-container">
+                <img src="images/trash1.png" class="small-image4" onclick="goToChat()">
+                <p>Trash</p>
+            </div>
+        </div>
+    </div>    
+    
+    <!-- Chat List -->
+    <div class="chat-list">
+        <div class="chat-item">
+            <div class="profile-pic"></div>
+            <div class="chat-info">
+                <p class="chat-name">Mac</p>
+                <p class="last-message">that looks so good!</p>
+            </div>
+            <button class="delete-chat">🗑️</button>
+        </div>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="chat-window">
+        <div class="chat-header">
+            <span class="chat-title">Mac</span>
+            <button class="settings-icon">⚙️</button>
+        </div>
+        <div class="chat-content" id="chatContent">
+            <div class="chat-message received">
+                <span class="message-text">that looks so good!</span>
+            </div>
+            <div class="chat-message sent">
+                <span class="message-text">Let's do it</span>
+            </div>
+        </div>
+        <div class="chat-footer">
+            <button class="add-file" onclick="openFileDialog()">+</button>
+            <input type="file" id="fileInput" class="hidden-file-input" onchange="handleFileSelect(event)">
+            <img src="images/emoji1.png" alt="Emoji Button" class="small-image" onclick="toggleEmojiPicker()">
+            <input type="text" class="chat-input" placeholder="Type a message...">
+            <button class="send-voice">🎤</button>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <img src="images/logout.png" alt="Example Image" class="small-image3">
+        <h2>Logout?</h2>
+        <p>Are you sure you want to logout?</p>
+        <div class="button-container">
+            <button id="cancelBtn">Cancel</button>
+            <button id="logoutBtn">Logout</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closeCompose()"></div>
+    <div class="compose-email-container" id="composeEmail">
+        <div class="compose-header">
+          <span>Compose Email</span>
+          <span class="close-btn" onclick="closeCompose()">×</span>
+        </div>
+        <input type="email" class="input-field" id="email" placeholder="Enter Email">
+        <input type="text" class="input-field" id="title" placeholder="Title">
+        <textarea class="input-field" id="details" placeholder="Details"></textarea>
+        <div class="buttons-container">
+          <button class="send-btn" onclick="sendEmail()">Send</button>
+          <button class="delete-btn" onclick="clearFields()">
+            <img src="images/trash1.png" alt="Delete">
+          </button>
+        </div>
+      </div>
+
+      <div class="overlay2" id="profilePopup" style="display: none;">
+        <div class="popup">
+            <!-- Popup Header -->
+            <div class="popup-header">
+                <h2>My Profile</h2>
+                <span class="close-btn" onclick="togglePopup()">&times;</span>
+            </div>
+    
+            <!-- Popup Content -->
+            <div class="popup-content">
+                <!-- Profile Picture -->
+                <div class="profile-pic2" onclick="changeProfilePicture()">
+                    <img src="images/user.png" alt="Profile Picture" id="profileImage">
+                </div>
+                
+                <!-- User Details -->
+                <div class="user-details">
+                    <h3>Thanakorn Jamnongprakhon</h3>
+                    <p>thanakorn.jamn@bumail.net</p>
+                    
+                    <!-- Input Fields -->
+                    <div class="form-group">
+                        <input type="text" id="fullName" placeholder="Full Name" value="Thanakorn Jamnongprakhon">
+                        <input type="text" id="phoneNumber" placeholder="Phone Number" value="0646941552">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="username" placeholder="Username" value="thanakorn.jamn">
+                        <input type="email2" id="email2" placeholder="Email" value="thanakorn.jamn@bumail.net">
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Popup Footer (Buttons) -->
+            <div class="popup-footer">
+                <button class="reset-btn" onclick="resetFields()">Reset</button>
+                <button class="save-btn" onclick="saveProfile()">Save</button>
+                <button class="logout-btn" id="myBtn">Log Out</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openFileDialog() {
+            document.getElementById('fileInput').click();
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('uploaded-image');
+                    
+                    const chatInput = document.querySelector('.chat-input');
+                    chatInput.value = '';
+                    chatInput.style.display = 'none'; // ซ่อนช่องแชท
+                    const chatFooter = document.querySelector('.chat-footer');
+                    
+                    const previewContainer = document.createElement('div');
+                    previewContainer.classList.add('preview-container');
+                    
+                    previewContainer.appendChild(img);
+                    
+                    const removeButton = document.createElement('button');
+                    removeButton.textContent = '✖';
+                    removeButton.classList.add('remove-preview');
+                    removeButton.onclick = function() {
+                        chatFooter.removeChild(previewContainer);
+                        chatInput.style.display = 'block';
+                    };
+                    
+                    previewContainer.appendChild(removeButton);
+                    chatFooter.insertBefore(previewContainer, chatFooter.firstChild);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+
+        var modal = document.getElementById("myModal");
+
+
+        var btn = document.getElementById("myBtn");
+
+        var span = document.getElementsByClassName("close")[0];
+
+        var cancelBtn = document.getElementById("cancelBtn");
+
+        var logoutBtn = document.getElementById("logoutBtn");
+
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        cancelBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        logoutBtn.onclick = function() {
+            window.location.href = "/Home";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        function toggleIcons() {
+        const iconList = document.getElementById("iconList");
+        if (iconList.style.display === "none" || iconList.style.display === "") {
+            iconList.style.display = "flex"; // แสดงไอคอน
+        } else {
+            iconList.style.display = "none"; // ซ่อนไอคอน
+        }
+    }
+
+        function openCompose() {
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('composeEmail').style.display = 'block';
+    }
+
+    function closeCompose() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('composeEmail').style.display = 'none';
+    }
+
+    function sendEmail() {
+        const email = document.getElementById('email').value;
+        const title = document.getElementById('title').value;
+        const details = document.getElementById('details').value;
+        if (email && title && details) {
+        alert('Email sent to ' + email);
+        closeCompose();
+        } else {
+        alert('Please fill out all fields');
+        }
+    }
+
+    function clearFields() {
+        document.getElementById('email').value = '';
+        document.getElementById('title').value = '';
+        document.getElementById('details').value = '';
+    }
+    function goToEmail() {
+            window.location.href = '/Email';
+        }
+
+    function goToChat() {
+            window.location.href = '/Chat';
+        }
+
+        function togglePopup() {
+        const popup = document.getElementById("profilePopup");
+        popup.style.display = popup.style.display === "flex" ? "none" : "flex";
+    }
+
+    function changeProfilePicture() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = event => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    document.getElementById("profileImage").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        input.click();
+    }
+    function resetFields() {
+        document.getElementById("fullName").value = "Thanakorn Jamnongprakhon";
+        document.getElementById("username").value = "thanakorn.jamn";
+        document.getElementById("phoneNumber").value = "0646941552";
+        document.getElementById("email2").value = "thanakorn.jamn@bumail.net";
+    }
+
+    // Save profile function
+    function saveProfile() {
+        alert("Profile saved successfully!");
+    }
+    </script>
+</body>
+</html>
